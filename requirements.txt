@@ -1,0 +1,18 @@
+# torch==2.1.0
+# torchaudio==2.1.0
+# numpy==1.24.3
+# PyYAML==6.0
+# librosa==0.10.1
+# soundfile==0.12.1
+# underthesea==6.5.0
+
+torch==2.1.0
+torchaudio==2.1.0
+numpy==1.24.3
+PyYAML==6.0
+librosa==0.10.1
+soundfile==0.12.1
+dask[complete]==2024.1.0
+pyarrow==14.0.1
+fsspec==2024.2.0
+huggingface_hub==0.20.3

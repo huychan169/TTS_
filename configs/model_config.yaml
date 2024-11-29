@@ -1,0 +1,19 @@
+training:
+  dataset_name: "trinhtuyen201/my-audio-dataset"
+  text_column: "text"
+  audio_column: "audio"
+
+  # Model hyperparameters
+  vocab_size: 1000
+  embedding_dim: 256
+  hidden_dim: 512
+  n_mels: 80
+
+  # Training parameters
+  batch_size: 16
+  learning_rate: 0.001
+  epochs: 100
+
+  # Audio processing
+  sample_rate: 22050
+  max_sequence_length: 200
