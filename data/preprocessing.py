@@ -34,10 +34,10 @@ class VietnameseTextProcessor:
 
     def build_vocabulary(self, texts):
         """Build vocabulary from a list of texts."""
-        unique_chars = set(''.join(texts))
-        self.char_to_idx = {char: idx + 2 for idx, char in enumerate(sorted(unique_chars))}
-        self.char_to_idx.update(self.special_tokens)
-        self.idx_to_char = {idx: char for char, idx in self.char_to_idx.items()}
+        self.char_to_idx = self.special_tokens.copy()
+        unique_chars = set(''.join(texts))  # Unique characters from all texts
+        self.char_to_idx.update({char: idx + len(self.special_tokens) for idx, char in enumerate(sorted(unique_chars))})
+        self.idx_to_char = {idx: char for char, idx in self.char_to_idx.items()} 
 
     def encode_text(self, text):
         """Encode text to indices."""

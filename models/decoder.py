@@ -1,5 +1,5 @@
-# import torch
-# import torch.nn as nn
+import torch
+import torch.nn as nn
 
 # class AudioDecoder(nn.Module):
 #     def __init__(self, hidden_dim=512, output_dim=80):  # 80 mel spectrogram bins
@@ -16,7 +16,7 @@ class Tacotron2Decoder(nn.Module):
     def __init__(self, hidden_dim, n_mels):
         super().__init__()
         self.lstm = nn.LSTM(hidden_dim, hidden_dim, batch_first=True)
-        self.attention = nn.Linear(hidden_dim, n_mels)
+        self.attention = nn.Linear(hidden_dim, hidden_dim)
         self.linear = nn.Linear(hidden_dim, n_mels)
 
     def forward(self, encoder_outputs):

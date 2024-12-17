@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torchaudio
 
-class WaveformGenerator(nn.Module):
+class WaveGlowVocoder(nn.Module):
     def __init__(self, input_dim=80, output_channels=1):
         super().__init__()
         # WaveNet-inspired architecture for converting mel spectrogram to waveform
@@ -15,7 +15,7 @@ class WaveformGenerator(nn.Module):
         ])
         
     def forward(self, mel_spectrogram):
-        x = mel_spectrogram
+        x = mel_spectrogram.transpose(1, 2)
         for layer in self.conv_layers:
             x = layer(x)
         return x
