@@ -20,7 +20,6 @@ def prepare_dataloader(dataset_name, text_column, audio_column, processor, batch
         audio_column=audio_column,
         processor=processor
     )
-
     dataloader = DataLoader(
         dataset,
         batch_size=batch_size,
@@ -35,7 +34,7 @@ def train():
     # Configurations
     config = {
         "dataset_name": "trinhtuyen201/my-audio-dataset",
-        "text_column": "text",
+        "text_column": "transcription",
         "audio_column": "audio",
         "batch_size": 16,
         "learning_rate": 0.001,
@@ -58,7 +57,7 @@ def train():
     )
 
     # Build vocabulary based on dataset
-    processor.build_vocabulary([item[config["text_column"]] for item in dataset.dataset])
+    processor.build_vocabulary([item["transcription"] for item in dataset.dataset])
 
     # Initialize models
     encoder = TextEncoder(

@@ -31,14 +31,18 @@ class TTSDataset(Dataset):
     def __getitem__(self, idx):
         item = self.dataset[idx]
         text = item[self.text_column]
-        audio_path = item[self.audio_column]
+        audio= item[self.audio_column]["array"]
 
         # Process text
         text = self.processor.process_text(text)
         text_indices = self.processor.encode_text(text)
-
+        # Truncate or pad text
+        if len(text_indices) > self.max_length:
+            text_indices = text_indices[:self.max_length]  # Cắt nếu dài hơn max_length
+        else:
+            pad_width = self.max_length - len(text_indices)
+            text_indices = text_indices + [self.processor.char_to_idx['<PAD>']] * pad_width  # Padding nếu ngắn hơn max_length
         # Process audio
-        audio, _ = librosa.load(audio_path, sr=self.sample_rate)
         mel_spec = librosa.feature.melspectrogram(y=audio, sr=self.sample_rate, n_mels=80)
 
         # Truncate or pad audio
@@ -52,3 +56,5 @@ class TTSDataset(Dataset):
             'text': torch.tensor(text_indices, dtype=torch.long),
             'audio': torch.tensor(mel_spec, dtype=torch.float32)
         }
+
+        # return text_indices, mel_spec
