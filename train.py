@@ -31,6 +31,8 @@ def prepare_dataloader(dataset_name, text_column, audio_column, processor, batch
 
 
 def train():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
     # Configurations
     config = {
         "dataset_name": "trinhtuyen201/my-audio-dataset",
@@ -64,12 +66,12 @@ def train():
         vocab_size=len(processor.char_to_idx),
         embedding_dim=config["embedding_dim"],
         hidden_dim=config["hidden_dim"]
-    )
+    ).to(device)
     decoder = Tacotron2Decoder(
         hidden_dim=config["hidden_dim"],
         n_mels=config["n_mels"]
-    )
-    vocoder = WaveGlowVocoder()
+    ).to(device)
+    vocoder = WaveGlowVocoder().to(device)
 
     # Loss and optimizer
     criterion = nn.MSELoss()
@@ -88,8 +90,8 @@ def train():
 
         total_loss = 0
         for batch in dataloader:
-            text = batch['text']  # Shape: (batch_size, seq_len)
-            audio = batch['audio']  # Shape: (batch_size, n_mels, time_steps)
+            text = batch['text'].to(device)  # Shape: (batch_size, seq_len)
+            audio = batch['audio'].to(device)  # Shape: (batch_size, n_mels, time_steps)
 
             # Forward pass
             optimizer.zero_grad()
